@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Online.Api.Data;
 using Shop.Online.Api.Repositories;
 using Shop.Online.Api.Repositories.Contracts;
+using ShopOnline.Api.Repositories;
+using ShopOnline.Api.Repositories.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,7 @@ builder.Services.AddDbContextPool<ShopOnlineDbContext>(options =>
 
 //controller for product
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 
 var app = builder.Build();
 
