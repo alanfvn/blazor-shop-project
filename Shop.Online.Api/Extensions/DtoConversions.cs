@@ -14,16 +14,29 @@ namespace Shop.Online.Api.Extensions {
                 join productCategory in productCategories
                 on product.CategoryId equals productCategory.Id
 
-                select new ProductDto { 
+                select new ProductDto {
                     Id = product.Id,
                     Name = product.Name,
-                    Description= product.Description,
-                    ImageURL= product.ImageURL,
-                    Price= product.Price,
-                    Qty= product.Qty,
-                    CategoryId= product.CategoryId,
+                    Description = product.Description,
+                    ImageURL = product.ImageURL,
+                    Price = product.Price,
+                    Qty = product.Qty,
+                    CategoryId = product.CategoryId,
                     CategoryName = productCategory.Name
                 }).ToList();
+        }
+
+        public static ProductDto ConvertToDto(this Product product, ProductCategory category) {
+            return new ProductDto {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                ImageURL = product.ImageURL,
+                Price = product.Price,
+                Qty = product.Qty,
+                CategoryId = product.CategoryId,
+                CategoryName = category.Name
+            };
         }
     }
 }

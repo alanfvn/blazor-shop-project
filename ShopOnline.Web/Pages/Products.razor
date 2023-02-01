@@ -2,12 +2,13 @@
 @using ShopOnlineModels.Dtos;
 @inherits ProductsBase
 
-@if (Products == null) {
-    <h3>Loading products...</h3>
-} else {
+@if (Products == null && ErrorMessage == null) {
+    <DisplaySpinner/>
+} else if (ErrorMessage != null){
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}else {
     <h3 class="mb-5">Products</h3>
     var productCount = Products.Count();
-
     @if (productCount > 0) {
         @foreach (var prodGroup in GetGroupedProductsByCategory()) {
             <h4>@GetCategoryName(prodGroup)</h4>
