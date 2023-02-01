@@ -3,11 +3,11 @@ using ShopOnline.Web.Services.Contracts;
 using ShopOnlineModels.Dtos;
 using System.Net.Http.Json;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace ShopOnline.Web.Services {
     public class ShoppingCartService : IShoppingCartService {
         private readonly HttpClient httpClient;
+        public event Action<int> OnShoppingCartChanged;
 
         public ShoppingCartService(HttpClient httpClient) {
             this.httpClient = httpClient;
@@ -55,7 +55,6 @@ namespace ShopOnline.Web.Services {
                 }
                 return default; 
             } catch (Exception ex) {
-
                 throw;
             }
         }
@@ -73,6 +72,12 @@ namespace ShopOnline.Web.Services {
                 return null;
             } catch (Exception ex) {
                 throw;
+            }
+        }
+
+        public void RaiseEventOnShoppingCartChanged(int totalQty) {
+            if(OnShoppingCartChanged != null) {
+                OnShoppingCartChanged.Invoke(totalQty);
             }
         }
     }

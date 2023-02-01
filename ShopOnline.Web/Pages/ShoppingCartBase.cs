@@ -15,13 +15,13 @@ namespace ShopOnline.Web.Pages {
         public List<CartItemDto> ShoppingCartItems { get; set; }
         public string ErrorMessage { get; set; }
         public string TotalPrice { get; set; }
-        public string TotalQty { get; set; }    
+        public int TotalQty { get; set; }    
 
         protected override async Task OnInitializedAsync() {
             try {
                 //we retrieve the items stored in the cart of the hardcoded user that we defined.
                 ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
-                CalculateCartSummaryTotals();
+                CartChanged();
             } catch (Exception ex) {
                 ErrorMessage = ex.Message;
                 throw;
@@ -47,7 +47,7 @@ namespace ShopOnline.Web.Pages {
                         item.TotalPrice = item.Price;
                     }
                 }
-                CalculateCartSummaryTotals();
+                CartChanged();
             } catch (Exception) {
 
                 throw;
@@ -58,7 +58,7 @@ namespace ShopOnline.Web.Pages {
             var cartItemDto = await ShoppingCartService.DeleteItem(id);
             //refresh the ui
             RemoveCartItem(id);
-            CalculateCartSummaryTotals();
+            CartChanged();
         }
 
         private CartItemDto GetCartItemDto(int id) {
@@ -78,8 +78,8 @@ namespace ShopOnline.Web.Pages {
             TotalPrice = ShoppingCartItems.Sum(p => p.TotalPrice).ToString("C");
         }
 
-        private void SetTotalQty() { 
-            TotalQty = ShoppingCartItems.Sum(p => p.Qty).ToString();
+        private void SetTotalQty() {
+            TotalQty = ShoppingCartItems.Sum(p => p.Qty);
         }
         
         private void UpdateItemTotalPrice(CartItemDto cartItemDto) {
@@ -95,6 +95,12 @@ namespace ShopOnline.Web.Pages {
 
         protected async Task UpdateQty_Input(int id) {
             await MakeUpdateQtyButtonVisible(id, true);
+        }
+
+        private void CartChanged() {
+            CalculateCartSummaryTotals();
+            ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQty);
+
         }
     }
 }

@@ -5,7 +5,10 @@ using ShopOnlineModels.Dtos;
 namespace ShopOnline.Web.Pages {
     public class ProductsBase: ComponentBase {
         [Inject]
-        public IProductService ProductService { get; set; } 
+        public IProductService ProductService { get; set; }
+        [Inject]
+        public IShoppingCartService ShoppingCartService { get; set; }
+
 
         public IEnumerable<ProductDto> Products { get; set; }
 
@@ -14,6 +17,12 @@ namespace ShopOnline.Web.Pages {
         protected override async Task OnInitializedAsync() {
             try {
                 Products = await ProductService.GetItems();
+                var shoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId);
+                var totalQty = shoppingCartItems.Sum(i => i.Qty);
+
+                //raise event for shopping cart
+                ShoppingCartService.RaiseEventOnShoppingCartChanged(totalQty);
+
             } catch (Exception ex) {
                 ErrorMessage = ex.Message;
             }
