@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.Web", "ShopOnline.Web\ShopOnline.Web.csproj", "{D7457929-E79D-4755-B833-77242A499B16}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Online.Api", "Shop.Online.Api\Shop.Online.Api.csproj", "{8BFB8B4C-522F-4B6C-902E-DAFD521E2550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopOnline.Api", "Shop.Online.Api\ShopOnline.Api.csproj", "{8BFB8B4C-522F-4B6C-902E-DAFD521E2550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnlineModels", "ShopOnlineModels\ShopOnlineModels.csproj", "{83DF2FAE-A9E0-4514-978D-0F3D9F925930}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.Models", "ShopOnlineModels\ShopOnline.Models.csproj", "{83DF2FAE-A9E0-4514-978D-0F3D9F925930}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
