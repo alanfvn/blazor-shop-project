@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Online.Api.Data;
+using Shop.Online.Api.Repositories;
+using Shop.Online.Api.Repositories.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +12,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//database context 
 builder.Services.AddDbContextPool<ShopOnlineDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ShopOnlineConnection"))
 );
+
+//controller for product
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 var app = builder.Build();
 
