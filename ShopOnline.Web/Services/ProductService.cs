@@ -1,4 +1,5 @@
-﻿using ShopOnline.Web.Services.Contracts;
+﻿using ShopOnline.Models.Dtos;
+using ShopOnline.Web.Services.Contracts;
 using ShopOnlineModels.Dtos;
 using System.Net.Http.Json;
 
@@ -47,5 +48,40 @@ namespace ShopOnline.Web.Services {
                 throw;
             }
         }
+
+        public async Task<IEnumerable<ProductCategoryDto>> GetProductCategories() {
+            try {
+                var resp = await httpClient.GetAsync("/api/Product/GetProductCategories");
+                if (resp.IsSuccessStatusCode) {
+                    if (resp.StatusCode == System.Net.HttpStatusCode.NoContent) {
+                        return default;
+                    }
+                    return await resp.Content.ReadFromJsonAsync<IEnumerable<ProductCategoryDto>>();
+                } else {
+                    var msg = await resp.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status: {resp.StatusCode}, Message: {msg}");
+                }
+            } catch (Exception) {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ProductDto>> GetItemsByCategory(int id) {
+            try {
+                var resp = await httpClient.GetAsync($"/api/Product/{id}/GetItemsByCategory");
+                if (resp.IsSuccessStatusCode) {
+                    if (resp.StatusCode == System.Net.HttpStatusCode.NoContent) {
+                        return default;
+                    }
+                    return await resp.Content.ReadFromJsonAsync<IEnumerable<ProductDto>>();
+                } else {
+                    var msg = await resp.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status: {resp.StatusCode}, Message: {msg}");
+                }
+            } catch (Exception) {
+                throw;
+            }
+        }
+
     }
 }

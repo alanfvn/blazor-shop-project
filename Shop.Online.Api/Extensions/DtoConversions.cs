@@ -1,8 +1,19 @@
 ﻿using Shop.Online.Api.Entities;
+using ShopOnline.Models.Dtos;
 using ShopOnlineModels.Dtos;
 
 namespace Shop.Online.Api.Extensions {
     public static class DtoConversions {
+
+        public static IEnumerable<ProductCategoryDto> ConvertToDto(this IEnumerable<ProductCategory> productCategories) {
+            return (from productCategory in productCategories
+                    select new ProductCategoryDto {
+                        Id = productCategory.Id,
+                        Name = productCategory.Name,
+                        IconCSS = productCategory.IconCSS
+                    }).ToList();
+        }
+
         public static IEnumerable<ProductDto> ConvertToDto(this IEnumerable<Product> products,
             IEnumerable<ProductCategory> productCategories) {
             /*

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Online.Api.Extensions;
 using Shop.Online.Api.Repositories.Contracts;
+using ShopOnline.Models.Dtos;
 using ShopOnlineModels.Dtos;
 
 namespace Shop.Online.Api.Controllers {
@@ -44,6 +45,35 @@ namespace Shop.Online.Api.Controllers {
                 }
             } catch (Exception) {
                 return StatusCode(500, "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet]
+        [Route(nameof(GetProductCategories))]
+        public async Task<ActionResult<IEnumerable<ProductCategoryDto>>> GetProductCategories() {
+            try {
+                var categories = await productRepository.GetCategories();
+                if(categories == null) {
+                    return NotFound();
+                }
+                return Ok(categories.ConvertToDto());
+            } catch (Exception) {
+                return StatusCode(500, "error retrieving data from the database");
+            }
+        }
+        [HttpGet]
+        [Route("{categoryId}/GetItemsByCategory")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetItemsByCategory(int categoryId) {
+            try {
+                var products = await productRepository.GetItemsByCategory(categoryId);
+                var productCategories = await productRepository.GetCategories();
+                var productDtos = products.ConvertToDto(productCategories);
+
+                return Ok(productDtos);
+
+            } catch (Exception) {
+                return StatusCode(500,
+                                "Error retrieving data from the database");
             }
         }
     }
