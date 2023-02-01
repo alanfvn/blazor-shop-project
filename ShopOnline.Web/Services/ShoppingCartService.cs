@@ -26,20 +26,33 @@ namespace ShopOnline.Web.Services {
             }
         }
 
-        public async Task<IEnumerable<CartItemDto>> GetItems(int userID) {
+        public async Task<List<CartItemDto>> GetItems(int userID) {
             try {
                 var resp = await httpClient.GetAsync($"api/ShoppingCart/{userID}/GetItems");
                 if (resp.IsSuccessStatusCode) {
                     if(resp.StatusCode == System.Net.HttpStatusCode.NoContent) {
-                        return Enumerable.Empty<CartItemDto>();
+                        return Enumerable.Empty<CartItemDto>().ToList();
                     }
-                    return await resp.Content.ReadFromJsonAsync<IEnumerable<CartItemDto>>();
+                    return await resp.Content.ReadFromJsonAsync<List<CartItemDto>>();
                 } else {
                     var msg = await resp.Content.ReadAsStringAsync();
                     throw new Exception($"Http status: {resp.StatusCode}, Message: {msg}");
                 }
 
             } catch (Exception ex) {
+                throw;
+            }
+        }
+
+        public async Task<CartItemDto> DeleteItem(int id) {
+            try {
+                var resp = await httpClient.DeleteAsync($"api/ShoppingCart/{id}");
+                if (resp.IsSuccessStatusCode) {
+                    return await resp.Content.ReadFromJsonAsync<CartItemDto>();
+                }
+                return default; 
+            } catch (Exception ex) {
+
                 throw;
             }
         }
